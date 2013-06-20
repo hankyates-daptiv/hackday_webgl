@@ -1,23 +1,18 @@
-function Circle(x, y, radius) {  
-    this.center = { x: x, y: y };  
-    this.radius = radius;  
-    this.originalRadius = radius; // not visible by GLSL  
-}  
+var textCanvas = document.getElementById("textCanvas"),
+    text = document.getElementById("text"),
+    ctx = textCanvas.getContext("2d");
 
-Circle.prototype.update = function () {  
-    this.radius = this.originalRadius * Math.sin(Date.now() / 100);
-};
-
-var c1 = new Circle(0.5, 0.5, 0.1);  
+ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+ctx.font = "bold 80px Helvetica";
+ctx.textAlign = "center";
+ctx.textBaseline = "middle";
+ctx.fillStyle = "#000";
+ctx.fillText("whatever", ctx.canvas.width / 2, ctx.canvas.height / 2);
 
 Glsl({  
     canvas: document.getElementById("viewport"),
     fragment: document.getElementById("fragment").textContent,
     variables: {  
-        c1: c1  
-    },  
-    update: function (time, delta) {  
-        c1.update();  
-        this.sync("c1");  
-    }  
+        text: textCanvas  
+    }
 }).start();

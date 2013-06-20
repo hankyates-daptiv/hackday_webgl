@@ -5,32 +5,26 @@
 </head>
 
 <body>
-<canvas id="viewport" width="600" height="400"></canvas>
+
+<canvas id="viewport" width="600" height="400" style="border: 1px solid red;"></canvas>
+<canvas id="textCanvas" width="600" height="400" style="border: 1px solid red;"></canvas>
 
 <script id="fragment" type="x-shader/x-fragment">
     #ifdef GL_ES
     precision mediump float;
     #endif
 
-    struct Circle {  
-        vec2 center;  
-        float radius;  
-    };
-
-    uniform Circle c1;  
     uniform vec2 resolution;
+    uniform sampler2D text;
 
-    bool inCircle (vec2 p, Circle c) {  
-        vec2 ratio = resolution/resolution.x;  
-        return distance(p*ratio, c.center*ratio) < c.radius;  
-    }  
+    void main (void) {
+        vec2 p = gl_FragCoord.xy / resolution.xy;
+        vec3 bg = vec3(0, 0, 0);
+        vec3 textColor = vec3(9, 9, 9);
+        vec4 t = texture2D(text, p);
 
-    void main (void) {  
-        vec2 p = ( gl_FragCoord.xy / resolution.xy );  
-        if (inCircle(p, c1))  
-        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);  
-        else  
-        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);  
+        vec3 c = mix(bg, textColor, t.a);
+        gl_FragColor = vec4(c, 1.0);
     }
 </script>
 
