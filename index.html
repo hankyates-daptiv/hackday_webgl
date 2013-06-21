@@ -24,7 +24,7 @@
     void main (void) {
         vec2 p = gl_FragCoord.xy / resolution.xy;
         vec3 bg = vec3(0, 0, 0);
-        vec3 textColor = vec3(9, 9, 9);
+        vec3 textColor = vec3(p.x, 0.7+0.3*cos(0.01*time), 0.7+0.3*sin(0.01*time));
         vec4 t = texture2D(text, p);
 
         vec3 c = mix(bg, textColor, t.a);
