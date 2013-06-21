@@ -9,7 +9,6 @@ var makeCanvas = function (txt) {
 
         ctx.fillText(txt, ctx.canvas.width/2, ctx.canvas.height/2);
 
-
         return textCanvas;
     },
     text = 'whatever',
@@ -32,10 +31,6 @@ var glsl = Glsl({
         this.set("time", time);
     }
 })
-
-function rerenderCanvas() {
-
-}
 
  document.getElementById("textInput")
     .addEventListener("keyup", function () {
