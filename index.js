@@ -67,10 +67,10 @@ $( "#slider-vertical" ).slider({
       orientation: "vertical",
       range: "min",
       min: 0,
-      max: 100,
+      max: 20,
       value: 0,
       slide: function( event, ui ) {
-        glsl.variables.bgMultiplier = $(this).slider('value');
+        glsl.variables.bgMultiplier = $(this).slider('value')/10;
         glsl.sync("bgMultiplier");
       }
     });
