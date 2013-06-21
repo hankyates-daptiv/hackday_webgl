@@ -31,7 +31,8 @@ var glsl = Glsl({
         time: 0,
         text: tmpTxt,
         useSpecialText: false,
-        useWaveEffect: false
+        useWaveEffect: false,
+        bgMultiplier: 0.0
     },
     update: function (time, delta) {
         this.set("time", time);
@@ -61,3 +62,15 @@ document.getElementById("waveModeButton")
   }, false);
 
 glsl.start();
+
+$( "#slider-vertical" ).slider({
+      orientation: "vertical",
+      range: "min",
+      min: 0,
+      max: 100,
+      value: 0,
+      slide: function( event, ui ) {
+        glsl.variables.bgMultiplier = $(this).slider('value');
+        glsl.sync("bgMultiplier");
+      }
+    });
