@@ -4,7 +4,11 @@ var makeCanvas = function (txt) {
 
         ctx.font = 'bold 40px Helvetica';
         ctx.fillStyle = '#000';
-        ctx.fillText(txt, 50, 100);
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        ctx.fillText(txt, ctx.canvas.width/2, ctx.canvas.height/2);
+
 
         return textCanvas;
     },
@@ -16,7 +20,7 @@ for (var i = 0; i < text.length; i++) {
     textArr[i] = new makeCanvas(text[i]);
 }
 
-Glsl({  
+var glsl = Glsl({  
     canvas: document.getElementById('viewport'),
     fragment: document.getElementById('fragment').textContent,
     variables: {  
@@ -26,4 +30,16 @@ Glsl({
     update: function (time, delta) {
         this.set("time", time);
     }
-}).start();
+})
+
+ document.getElementById("textInput")
+    .addEventListener("keyup", function () {
+        var ctx = tmpTxt.getContext('2d');
+        ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(this.value,ctx.canvas.width/2, ctx.canvas.height/2);
+        glsl.sync("text");
+      }, false);
+
+glsl.start();
