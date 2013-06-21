@@ -2,12 +2,17 @@ var makeCanvas = function (txt) {
         var textCanvas = document.createElement('canvas'),
             ctx = textCanvas.getContext('2d');
 
-        ctx.font = 'bold 40px Helvetica';
-        ctx.fillStyle = '#000';
+        textCanvas.width = 1200;
+        textCanvas.height = 600;
+
+        ctx.font = 'bold 160px Helvetica';
+        ctx.fillStyle = '#fff';
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-
         ctx.fillText(txt, ctx.canvas.width/2, ctx.canvas.height/2);
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 3;
+        ctx.strokeText(txt, ctx.canvas.width/2, ctx.canvas.height/2);
 
         return textCanvas;
     },
