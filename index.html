@@ -12,7 +12,11 @@
 
 <canvas id="viewport" width="600" height="400" style="border: 1px solid red;"></canvas>
 
-<button id="rainbowModeButton" style ="display:inherit;font-size: 18px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 10px; color: #ffffff;background-color: #0044cc;text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);">Rainbow Mode</button>
+<div>
+<button id="rainbowModeButton" style ="font-size: 18px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 10px; color: #ffffff;background-color: #0044cc;text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);">Rainbow Mode</button>
+
+<button id="waveModeButton" style ="display:inline-block;font-size: 18px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 10px; color: #ffffff;background-color: #51a351;text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);">Wave Mode</button>
+<div>
 
 <script id="fragment" type="x-shader/x-fragment">
     #ifdef GL_ES
@@ -22,22 +26,31 @@
     uniform vec2 resolution;
     uniform float time;
     uniform bool useSpecialText;
+    uniform bool useWaveEffect;
     uniform sampler2D text;
 
     void main (void) {
-        vec2 p = gl_FragCoord.xy / resolution.xy;
+        vec2 coord = gl_FragCoord.xy / resolution.xy;
         vec3 bg = vec3(0, 0, 0);
-        vec3 rainbowTextColor = vec3(p.x, 0.7+0.3*cos(0.01*time), 0.7+0.3*sin(0.01*time));
-        vec3 normalTextColor = vec3(9,9,9);
-        vec4 t = texture2D(text, p);
+        vec3 textColor = vec3(9,9,9);
 
-        vec3 textColor = normalTextColor;
-        if(useSpecialText) {
-            textColor = rainbowTextColor;
-        }
+    if(useWaveEffect) {
+        // Some wave effect on the coordinate to lookup in the text texture
+        float waveAmp = 0.01+0.10*(1.0 + sin(time*0.001));
+        float waveSpeed = time*0.01;
+        float waveMag = 20.0 + 15.*cos(3.+time*0.000111);
+        coord =coord*vec2(1.0, 2.)-vec2(0.0, 0.5)+vec2(0., waveAmp*sin(waveSpeed+coord.x*waveMag));
+    }
 
-        vec3 c = mix(bg, textColor, t.a);
-        gl_FragColor = vec4(c, 1.0);
+    vec4 t = texture2D(text, coord);
+
+    if(useSpecialText) {
+        // add rainbow effect
+        textColor = vec3(coord.x, 0.7+0.3*cos(0.01*time), 0.7+0.3*sin(0.01*time));
+    }
+
+    vec3 c = mix(bg, textColor, t.a);
+    gl_FragColor = vec4(c, 1.0);
     }
 </script>
 

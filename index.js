@@ -25,7 +25,8 @@ var glsl = Glsl({
     variables: {  
         time: 0,
         text: tmpTxt,
-        useSpecialText: false
+        useSpecialText: false,
+        useWaveEffect: false
     },
     update: function (time, delta) {
         this.set("time", time);
@@ -47,5 +48,11 @@ document.getElementById("rainbowModeButton")
         glsl.variables.useSpecialText = !glsl.variables.useSpecialText;
         glsl.sync("useSpecialText");
       }, false);
+
+document.getElementById("waveModeButton")
+.addEventListener("click", function () {
+    glsl.variables.useWaveEffect = !glsl.variables.useWaveEffect;
+    glsl.sync("useWaveEffect");
+  }, false);
 
 glsl.start();
