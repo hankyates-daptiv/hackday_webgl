@@ -24,6 +24,6 @@ Glsl({
         text: tmpTxt
     },
     update: function (time, delta) {
-        this.set("time", delta);
+        this.set("time", time);
     }
 }).start();
