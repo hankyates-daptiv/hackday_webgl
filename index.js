@@ -1,18 +1,29 @@
-var textCanvas = document.getElementById("textCanvas"),
-    text = document.getElementById("text"),
-    ctx = textCanvas.getContext("2d");
+var makeCanvas = function (txt) {
+        var textCanvas = document.createElement('canvas'),
+            ctx = textCanvas.getContext('2d');
 
-ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-ctx.font = "bold 80px Helvetica";
-ctx.textAlign = "center";
-ctx.textBaseline = "middle";
-ctx.fillStyle = "#000";
-ctx.fillText("whatever", ctx.canvas.width / 2, ctx.canvas.height / 2);
+        ctx.font = 'bold 40px Helvetica';
+        ctx.fillStyle = '#000';
+        ctx.fillText(txt, 50, 100);
+
+        return textCanvas;
+    },
+    text = 'whatever',
+    tmpTxt = new makeCanvas(text),
+    textArr = [];
+
+for (var i = 0; i < text.length; i++) {
+    textArr[i] = new makeCanvas(text[i]);
+}
 
 Glsl({  
-    canvas: document.getElementById("viewport"),
-    fragment: document.getElementById("fragment").textContent,
+    canvas: document.getElementById('viewport'),
+    fragment: document.getElementById('fragment').textContent,
     variables: {  
-        text: textCanvas  
+        time: 0,
+        text: tmpTxt
+    },
+    update: function (time, delta) {
+        this.set("time", delta);
     }
 }).start();
